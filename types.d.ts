@@ -13,3 +13,12 @@ interface NewsArticle {
 interface NewsData extends NewsArticle {
   link: string
 }
+
+
+interface Review {
+  rating: number[]
+  reason: string
+  conclusion: boolean
+}
+
+interface ReviewData extends NewsData, Review {}
