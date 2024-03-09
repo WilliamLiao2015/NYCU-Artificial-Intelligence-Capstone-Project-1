@@ -6,26 +6,27 @@ import { OpenAI } from "npm:openai"
 const { OPENAI_API_KEY } = await load()
 const client = new OpenAI({ apiKey: OPENAI_API_KEY })
 
-const systemPrompt = (await Deno.readTextFile("./data/system_prompt.txt")).replace(/{{currentDate}}/g, new Date().toDateString())
+const systemPrompt = (await Deno.readTextFile("./data/system_prompt.txt"))
 
 
-async function getChatGPTResponse(text: string) {
-  const prompt = (await Deno.readTextFile("./data/user_prompt.txt")).replace(/{{text}}/g, text)
+async function getChatGPTResponse({ title, textContent }: NewsData) {
+  const prompt = (await Deno.readTextFile("./data/user_prompt.txt")).replace(/{{title}}/g, title).replace(/{{text}}/g, textContent)
+  console.log(prompt)
   const response = await client.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
       { role: "system", content: systemPrompt },
       { role: "user", content: prompt }
-    ]
+    ],
+    max_tokens: 500
   })
   return response.choices[0].message.content
 }
 
 
-const news = JSON.parse(await Deno.readTextFile("./data/news.json")) as NewsData[]
-const newsTexts = news.map(({ textContent }) => textContent).slice(7, 8)
+const newsList = JSON.parse(await Deno.readTextFile("./data/news.json")) as NewsData[]
 
-newsTexts.forEach(async (text: string) => {
-  const response = await getChatGPTResponse(text)
+newsList.slice(0, 1).forEach(async news => {
+  const response = await getChatGPTResponse(news)
   console.log(response)
 })
