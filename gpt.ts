@@ -43,7 +43,7 @@ const markers = {
   conclusion: "- conclusion:"
 }
 const newsList = JSON.parse(await Deno.readTextFile("./data/news.json")) as NewsData[]
-const reviewList = await Promise.all(newsList.slice(400, 500).filter(news => !previousReviews.map(pr => pr.link).includes(news.link)).map(async news => {
+const reviewList = await Promise.all(newsList.slice(1200, 1300).filter(news => !previousReviews.map(pr => pr.link).includes(news.link)).map(async news => {
   try {
     const response = await exponentialBackoff(() => getChatGPTResponse(news), 5, 1000)
     if (!response) return null
