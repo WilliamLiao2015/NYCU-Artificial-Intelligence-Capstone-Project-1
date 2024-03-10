@@ -3,3 +3,5 @@
 data/backups
 
 .env
+
+problem.log
