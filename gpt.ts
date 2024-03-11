@@ -1,5 +1,4 @@
 import { load } from "https://deno.land/std@0.219.1/dotenv/mod.ts"
-//import { parse } from "https://deno.land/std@0.219.1/yaml/mod.ts"
 
 import { OpenAI } from "npm:openai"
 
@@ -9,7 +8,7 @@ import {exponentialBackoff} from "./backoff.ts"
 
 
 const logStream_problem = fs.createWriteStream("problem.log", { flags: "a" });
-function logProblem(message: any) {
+function logProblem(message: string) {
   logStream_problem.write(message + '\n');
 };
 
@@ -55,7 +54,7 @@ const reviewList = await Promise.all(newsList.slice(1200, 1300).filter(news => !
     const ratingStr = response.substring(ratingStart + markers.rating.length, reasonStart).trim()
     const rating = ratingStr.slice(1, -1).split(",").map((item: string) => parseFloat(item.trim()));
     const reason = response.substring(reasonStart + markers.reason.length, conclusionStart).trim()
-    const conclusion = response.substring(conclusionStart + markers.conclusion.length).trim()
+    const conclusion = response.substring(conclusionStart + markers.conclusion.length).trim() === "1"
     //const reviewArray = parseResponse(response) as object[]
     //const [rating, reason, conclusion] = reviewArray.map((rObj: object) => Object.values(rObj)[0])
     newCount++
@@ -81,8 +80,4 @@ console.log(`The number of new reviews is ${newCount}`)
 
 if (errFlag) {
   console.log("There was an error parsing some of the news articles. Please check the log file for more information.")
-}
-
-function delay(ms: number) {
-  return new Promise( resolve => setTimeout(resolve, ms) );
 }
