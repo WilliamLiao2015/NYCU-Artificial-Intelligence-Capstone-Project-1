@@ -7,7 +7,12 @@ async function filterLang() {
     const reviews = JSON.parse(decodedContent);
 
     const filteredReviews = reviews.filter((review: any) => {
-        return (review.lang !== "zh-TW" && review.lang !== "zh-tw" && review.lang !== "zh-Hant" && review.textContent !== "");
+        return (review.lang !== "zh-TW" && 
+                review.lang !== "zh-tw" && 
+                review.lang !== "zh-Hant" && 
+                review.lang !== "tw" &&
+                review.textContent !== "" &&
+                review.siteName !== "巴哈姆特電玩資訊站");
     });
 
     await Deno.writeFile(filePath, new TextEncoder().encode(JSON.stringify(filteredReviews)));
