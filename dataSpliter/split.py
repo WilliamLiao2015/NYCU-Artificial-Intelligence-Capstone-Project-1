@@ -9,8 +9,8 @@ with open("../data/reviews.json", "r", encoding="utf-8") as fp:
 valid_reviews = [review for review in reviews if len([r for r in review["rating"] if r is not None]) == 7]
 random.shuffle(valid_reviews)
 
-test_data = valid_reviews[50:]
-train_data = valid_reviews[:50]
+test_data = valid_reviews[:50]
+train_data = valid_reviews[50:]
 
 expected_accepted = [vr for vr in valid_reviews if bool(vr['conclusion'])]
 expected_rejected = [vr for vr in valid_reviews if not bool(vr['conclusion'])]
