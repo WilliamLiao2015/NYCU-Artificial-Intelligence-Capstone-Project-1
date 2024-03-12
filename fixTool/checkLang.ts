@@ -5,7 +5,7 @@ const reviewsData = fs.readFileSync("../data/reviews.json", "utf-8");
 const reviews = JSON.parse(reviewsData);
 
 // Extract the "lang" values
-const langValues = reviews.map((review: any) => review.lang);
+const langValues = reviews.map((review: ReviewData) => review.lang);
 
 // Remove duplicates
 const uniqueLangValues = Array.from(new Set(langValues));

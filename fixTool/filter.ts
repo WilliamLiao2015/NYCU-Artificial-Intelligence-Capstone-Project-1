@@ -6,7 +6,7 @@ async function filterLang() {
 
     const reviews = JSON.parse(decodedContent);
 
-    const filteredReviews = reviews.filter((review: any) => {
+    const filteredReviews = reviews.filter((review: ReviewData) => {
         return (review.lang !== "zh-TW" && 
                 review.lang !== "zh-tw" && 
                 review.lang !== "zh-Hant" && 
