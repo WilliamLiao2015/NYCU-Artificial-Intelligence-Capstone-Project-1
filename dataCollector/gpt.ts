@@ -4,13 +4,15 @@ import { OpenAI } from "npm:openai"
 
 import * as fs from "node:fs"
 
-import {exponentialBackoff} from "./backoff.ts"
+import { exponentialBackoff } from "./backoff.ts"
 
 
-const logStream_problem = fs.createWriteStream("problem.log", { flags: "a" });
+const logStream_problem = fs.createWriteStream("problem.log", { flags: "a" })
+
 function logProblem(message: string) {
-  logStream_problem.write(message + '\n');
-};
+  logStream_problem.write(message + '\n')
+}
+
 
 const { OPENAI_API_KEY } = await load()
 const client = new OpenAI({ apiKey: OPENAI_API_KEY })
@@ -52,7 +54,7 @@ const reviewList = await Promise.all(newsList.slice(1200, 1300).filter(news => !
     const conclusionStart = response.indexOf(markers.conclusion)
     
     const ratingStr = response.substring(ratingStart + markers.rating.length, reasonStart).trim()
-    const rating = ratingStr.slice(1, -1).split(",").map((item: string) => parseFloat(item.trim()));
+    const rating = ratingStr.slice(1, -1).split(",").map((item: string) => parseFloat(item.trim()))
     const reason = response.substring(reasonStart + markers.reason.length, conclusionStart).trim()
     const conclusion = response.substring(conclusionStart + markers.conclusion.length).trim() === "1"
     //const reviewArray = parseResponse(response) as object[]
