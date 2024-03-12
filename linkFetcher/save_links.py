@@ -24,7 +24,7 @@ def get_links(query: str, category: str = "nws", language: str = "en"):
 
 
 if __name__ == "__main__":
-    with open("./data/random_words.txt") as fp:
+    with open("../data/random_words.txt") as fp:
         queries = fp.readlines()[TOPIC_SLICE]
     links = []
     progress = tqdm(queries)
@@ -34,6 +34,6 @@ if __name__ == "__main__":
         progress.refresh()
         time.sleep(random.random() * 0.3)
         if progress.n % 10 == 0: time.sleep(random.random())
-    links_set = set([*links, *pd.read_csv("./data/links.csv")["links"]])
+    links_set = set([*links, *pd.read_csv("../data/links.csv")["links"]])
     df = pd.DataFrame({ "links": list(links_set) })
-    df.to_csv(f"./data/links.csv", index=False)
+    df.to_csv(f"../data/links.csv", index=False)

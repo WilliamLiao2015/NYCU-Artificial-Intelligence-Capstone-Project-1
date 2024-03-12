@@ -15,12 +15,12 @@ function logProblem(message: string) {
 const { OPENAI_API_KEY } = await load()
 const client = new OpenAI({ apiKey: OPENAI_API_KEY })
 
-const previousReviews = JSON.parse(await Deno.readTextFile("./data/reviews.json")) as ReviewData[]
-const systemPrompt = await Deno.readTextFile("./data/system_prompt.txt")
+const previousReviews = JSON.parse(await Deno.readTextFile("../data/reviews.json")) as ReviewData[]
+const systemPrompt = await Deno.readTextFile("../data/system_prompt.txt")
 
 
 async function getChatGPTResponse({ title, textContent }: NewsData) {
-  const prompt = (await Deno.readTextFile("./data/user_prompt.txt")).replace(/{{title}}/g, title).replace(/{{text}}/g, textContent)
+  const prompt = (await Deno.readTextFile("../data/user_prompt.txt")).replace(/{{title}}/g, title).replace(/{{text}}/g, textContent)
   //console.log(prompt)
   const response = await client.chat.completions.create({
     model: "gpt-3.5-turbo",
@@ -41,7 +41,7 @@ const markers = {
   reason: "- reason:",
   conclusion: "- conclusion:"
 }
-const newsList = JSON.parse(await Deno.readTextFile("./data/news.json")) as NewsData[]
+const newsList = JSON.parse(await Deno.readTextFile("../data/news.json")) as NewsData[]
 const reviewList = await Promise.all(newsList.slice(1200, 1300).filter(news => !previousReviews.map(pr => pr.link).includes(news.link)).map(async news => {
   try {
     const response = await exponentialBackoff(() => getChatGPTResponse(news), 5, 1000)
@@ -73,7 +73,7 @@ const filteredReviewList = reviewList.filter(review => review !== null) as Revie
 const allReviews = previousReviews.concat(filteredReviewList)
 
 
-await Deno.writeTextFile("./data/reviews.json", JSON.stringify(allReviews))
+await Deno.writeTextFile("../data/reviews.json", JSON.stringify(allReviews))
 
 
 console.log(`The number of new reviews is ${newCount}`)

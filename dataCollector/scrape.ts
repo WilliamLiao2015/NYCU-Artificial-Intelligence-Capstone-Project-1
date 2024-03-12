@@ -27,7 +27,7 @@ async function parseNews(url: string) {
 }
 
 async function scrapeNews() {
-  const newsLinkList = (await Deno.readTextFile("./data/links.txt")).replace(/\r/g, "").split("\n")
+  const newsLinkList = (await Deno.readTextFile("../data/links.txt")).replace(/\r/g, "").split("\n")
   console.log(`The number of news links is ${newsLinkList.length}`)
   let success = 0
   const newsDataList = await Promise.all(
@@ -44,7 +44,7 @@ async function scrapeNews() {
     })
   )
   const restrictedDataList = newsDataList.map(newsData => pick(newsData, ["lang", "siteName", "link", "title", "byline", "excerpt", "textContent", "length", "publishedTime"])).filter(data => Object.keys(data).length) as NewsData[]
-  await Deno.writeTextFile("./data/news.json", JSON.stringify(restrictedDataList, null, 2))
+  await Deno.writeTextFile("../data/news.json", JSON.stringify(restrictedDataList, null, 2))
   console.log(`The number of successfully parsed news articles is ${success}`)
 }
 
