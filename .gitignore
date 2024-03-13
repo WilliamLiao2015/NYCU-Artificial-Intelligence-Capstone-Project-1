@@ -1,6 +1,7 @@
 .venv/
 
 data/backups/
+training/checkpoints/*
 
 .env
 
