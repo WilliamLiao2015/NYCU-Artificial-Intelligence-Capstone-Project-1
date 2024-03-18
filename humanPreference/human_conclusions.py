@@ -21,7 +21,7 @@ def save_review(review, human_conclusion: int):
         json.dump(reviews, fp)
 
 
-iterator = iter(test_reviews[25:])
+iterator = iter(test_reviews)
 
 with gr.Blocks(gr.themes.Default(text_size="lg")) as demo:
     try: review = next(iterator)
